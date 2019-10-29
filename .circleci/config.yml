@@ -33,6 +33,9 @@ jobs:
       - run: bundle exec rake db:create
       - run: bundle exec rake db:migrate
       - run: bundle exec rake db:seed
+      - run: echo 'export jwt_string="1234567"' >> $BASH_ENV
+      - run: echo 'export jwt_encryption_algorithm="HS256"' >> $BASH_ENV
+      - run: echo 'export client_id="123456"' >> $BASH_ENV
       # run tests!
       - run:
           name: run tests
