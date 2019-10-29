@@ -1,1 +1,1 @@
-# JWT Authentication Boilerplate [![CircleCI](https://circleci.com/gh/Vadlusk/JWT_boilerplate.svg?style=svg)](https://circleci.com/gh/Vadlusk/JWT_boilerplate)
+# JWT Authentication Boilerplate [![CircleCI](https://circleci.com/gh/Vadlusk/JWT_boilerplate.svg?style=svg)](https://circleci.com/gh/Vadlusk/JWT_boilerplate)[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/JWT_boilerplate/badge.svg?branch=master)](https://coveralls.io/github/Vadlusk/JWT_boilerplate?branch=master)
