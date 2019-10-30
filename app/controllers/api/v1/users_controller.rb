@@ -9,13 +9,13 @@ class Api::V1::UsersController < ApplicationController
 
     @user.authenticate!(user_params[:password])
 
-    render json: { user_id: @user.id, token: token }, status: :ok
+    render json: { user_id: @user.id }.merge(new_jwts), status: :ok
   end
 
   def create
     @user = User.create!(user_params)
 
-    render json: { user_id: @user.id, token: token }, status: :created
+    render json: { user_id: @user.id }.merge(new_jwts), status: :created
   end
 
   def destroy
