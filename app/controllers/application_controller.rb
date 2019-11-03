@@ -48,19 +48,11 @@ class ApplicationController < ActionController::API
     raise AuthenticationError::ResourceNotOwnedByRequester unless User.find(params['id']) == jwt_user
   end
 
-  def new_jwts
-    { access_token: access_token, refresh_token: refresh_token }
+  def token
+    JsonWebToken.encode(payload: { user_id: @user.id })
   end
 
   private
-
-    def access_token
-      JsonWebToken.encode(payload: { user_id: @user.id }, expiration: 3600 * 24 * 90)
-    end
-
-    def refresh_token
-      JsonWebToken.encode(payload: { user_id: @user.id })
-    end
 
     def decoded_jwt
       JsonWebToken.decode(token: request_jwt)

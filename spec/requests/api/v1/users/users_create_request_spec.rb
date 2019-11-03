@@ -25,15 +25,13 @@ describe 'POST /api/v1/users' do
       expect(response.status).to eq(201)
     end
 
-    it 'responds with a user ID and two valid JWTs' do
+    it 'responds with a user ID and a valid JWT' do
       created_user = User.all.first
-      decoded_refresh_token = JsonWebToken.decode(token: json_response[:refresh_token])
-      decoded_access_token = JsonWebToken.decode(token: json_response[:access_token])
+      decoded_token = JsonWebToken.decode(token: json_response[:token])
 
-      expect(json_response.keys).to include(:user_id, :refresh_token, :access_token)
+      expect(json_response.keys).to include(:user_id, :token)
       expect(json_response[:user_id]).to eq(created_user[:id])
-      expect(decoded_refresh_token[0]['user_id']).to eq(created_user[:id])
-      expect(decoded_access_token[0]['user_id']).to eq(created_user[:id])
+      expect(decoded_token[0]['user_id']).to eq(created_user[:id])
     end
   end
 
