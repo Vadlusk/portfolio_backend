@@ -41,7 +41,7 @@ RSpec.shared_examples 'a JWT protected endpoint' do |verb|
 end
 
 def make_request(verb)
-  if verb == 'DELETE'
+  if verb == :delete
     delete path, headers: headers
   end
 end

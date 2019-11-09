@@ -6,7 +6,7 @@ describe 'DELETE /api/v1/users/:id' do
   let(:jwt)     { JsonWebToken.encode(payload: { user_id: user.id }) }
   let(:headers) { { 'Authorization': "Basic token=#{jwt}" } }
 
-  it_behaves_like 'a JWT protected endpoint', 'DELETE'
+  it_behaves_like 'a JWT protected endpoint', :delete
 
   context 'with valid credentials' do
     before do
