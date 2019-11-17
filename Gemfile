@@ -10,7 +10,7 @@ gem 'figaro'
 gem 'jwt'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 3.11'
-gem 'rack-cors'
+gem 'rack-cors', ">= 1.0.4"
 gem 'rails', '~> 6.0.0'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
