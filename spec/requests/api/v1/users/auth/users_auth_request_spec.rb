@@ -9,7 +9,6 @@ describe 'POST /api/v1/users/authenticate' do
   let(:headers)  { { 'Authorization': "Token token=#{ENV['client_id']}" } }
 
   it_behaves_like 'a client ID protected endpoint'
-  it_behaves_like 'an authentication endpoint'
 
   context 'with valid credentials' do
     before do
