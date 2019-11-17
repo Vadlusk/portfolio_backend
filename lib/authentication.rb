@@ -8,9 +8,6 @@ module Authentication
 
     raise AuthenticationError::HeaderMissing if result.nil?
     raise AuthenticationError::InvalidID unless result
-  end
-
-  def validate_presence_of_credentials
     raise AuthenticationError::MissingEmail if params[:email].nil?
     raise AuthenticationError::MissingPassword if params[:password].nil?
   end
@@ -25,15 +22,15 @@ module Authentication
 
   private
 
-    def decoded_jwt
-      JsonWebToken.decode(token: request_jwt)
-    end
-
     def jwt_user
       @jwt_user ||= User.find(decoded_jwt.first['user_id'])
     end
 
+    def decoded_jwt
+      @decoded_jwt ||= JsonWebToken.decode(token: request_jwt)
+    end
+
     def request_jwt
-      request.headers['Authorization']&.split('=')&.last
+      @request_jwt ||= request.headers['Authorization']&.split('=')&.last
     end
 end

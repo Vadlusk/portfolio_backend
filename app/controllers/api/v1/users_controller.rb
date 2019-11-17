@@ -1,6 +1,5 @@
 class Api::V1::UsersController < ApplicationController
   before_action :authenticate_client_id, only: %i[authenticate create]
-  before_action :validate_presence_of_credentials, only: %i[authenticate create]
   before_action :authenticate_jwt, only: %i[destroy]
   before_action :check_ownership, only: %i[destroy]
 
