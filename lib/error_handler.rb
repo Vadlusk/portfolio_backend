@@ -1,28 +1,23 @@
 module ErrorHandler
   def self.included(klass)
     klass.class_eval do
-      rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
-      rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity
-      rescue_from AuthenticationError, with: :render_unauthorized
-      rescue_from JWT::ExpiredSignature, JWT::DecodeError, JWT::VerificationError, with: :render_unauthorized
+      rescue_from ActiveRecord::RecordNotFound do |e|
+        render_error(e, :not_found)
+      end
+
+      rescue_from ActiveRecord::RecordInvalid do |e|
+        render_error(e, :unprocessable_entity)
+      end
+
+      rescue_from AuthenticationError, JWT::ExpiredSignature, JWT::DecodeError, JWT::VerificationError do |e|
+        render_error(e, :unauthorized)
+      end
     end
   end
 
   private
 
-    def render_error(message, status)
-      render json: { error: message }, status: status
-    end
-
-    def render_unauthorized(e)
-      render_error(e.message, :unauthorized)
-    end
-
-    def render_not_found(e)
-      render_error(e.message, :not_found)
-    end
-
-    def render_unprocessable_entity(e)
-      render_error(e.message, :unprocessable_entity)
+    def render_error(e, status)
+      render json: { error: e.message }, status: status
     end
 end
