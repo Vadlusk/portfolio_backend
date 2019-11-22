@@ -28,4 +28,20 @@ describe User do
       expect(copy_cat).to_not be_valid
     end
   end
+
+  describe '#authenticate_with_error' do
+    context 'with a correct password' do
+      it 'does not raise an error' do
+        expect { user.authenticate_with_error(password) } .to_not \
+          raise_error AuthenticationError::InvalidPassword
+      end
+    end
+
+    context 'with an incorrect password' do
+      it 'raises an error' do
+        expect { user.authenticate_with_error('incorrect_password') } .to \
+          raise_error AuthenticationError::InvalidPassword
+      end
+    end
+  end
 end
