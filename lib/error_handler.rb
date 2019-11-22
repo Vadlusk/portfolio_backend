@@ -1,3 +1,5 @@
+UNAUTHORIZED_ERRORS = [AuthenticationError, JWT::ExpiredSignature, JWT::DecodeError, JWT::VerificationError]
+
 module ErrorHandler
   def self.included(klass)
     klass.class_eval do
@@ -9,7 +11,7 @@ module ErrorHandler
         render_error(e, :unprocessable_entity)
       end
 
-      rescue_from AuthenticationError, JWT::ExpiredSignature, JWT::DecodeError, JWT::VerificationError do |e|
+      rescue_from *UNAUTHORIZED_ERRORS do |e|
         render_error(e, :unauthorized)
       end
     end
