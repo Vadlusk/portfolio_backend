@@ -20,11 +20,11 @@ describe 'POST /api/v1/users' do
       expect(User.all.length).to eq(1)
     end
 
-    it 'responds with a 201 status' do
+    it 'responds with a 201' do
       expect(response.status).to eq(201)
     end
 
-    it 'responds with a user ID and a valid JWT' do
+    it 'responds with the correct user id and JWT' do
       created_user = User.all.first
       decoded_token = JsonWebToken.decode(token: json_response[:token])
 
@@ -38,10 +38,10 @@ describe 'POST /api/v1/users' do
     let(:user)   { create(:user) }
     let(:params) { { email: user.email, password: 'anything' } }
 
-    it 'responds with a 422 and an error message' do
+    it 'responds with a 422' do
       post path, params: params, headers: headers
 
-      expected_error_status_and_message(status: 422, message: 'Validation failed: Email has already been taken')
+      expected_error(status: 422, message: 'Validation failed: Email has already been taken')
     end
   end
 end

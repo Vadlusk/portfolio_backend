@@ -25,20 +25,20 @@ describe 'DELETE /api/v1/users/:id' do
   end
 
   context 'when URI\'s user ID is invalid' do
-    it 'responds with a 404 and an error message' do
+    it 'responds with a 404' do
       delete api_v1_user_path('not_a_user'), headers: headers
 
-      expected_error_status_and_message(status: 404, message: "Couldn't find User with 'id'=not_a_user")
+      expected_error(status: 404, message: "Couldn't find User with 'id'=not_a_user")
     end
   end
 
   context 'when JWT\'s user ID is valid and does not match user ID in URI' do
     let(:wrong_user) { create(:user, email: 'wrong@email.com') }
 
-    it 'responds with a 401 and an error message' do
+    it 'responds with a 401' do
       delete api_v1_user_path(wrong_user), headers: headers
 
-      expected_error_status_and_message(status: 401, message: 'Resource does not belong to current user')
+      expected_error(status: 401, message: 'Resource does not belong to current user')
     end
   end
 end

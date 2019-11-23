@@ -31,20 +31,20 @@ describe 'POST /api/v1/users/authenticate' do
   context 'when the email does not exist in the database' do
     let(:email) { 'wrong@wrong.com' }
 
-    it 'responds with a 404 and an error message' do
+    it 'responds with a 404' do
       post path, params: params, headers: headers
 
-      expected_error_status_and_message(status: 404, message: "Couldn't find User")
+      expected_error(status: 404, message: "Couldn't find User")
     end
   end
 
   context 'when the password is incorrect' do
     let(:password) { 'cant be right' }
 
-    it 'responds with a 401 and an error message' do
+    it 'responds with a 401' do
       post path, params: params, headers: headers
 
-      expected_error_status_and_message(status: 401, message: 'Password is incorrect')
+      expected_error(status: 401, message: 'Password is incorrect')
     end
   end
 end
