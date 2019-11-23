@@ -8,8 +8,8 @@ require 'coveralls'
 
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
-Coveralls.wear!('rails')
 SimpleCov.start 'rails'
+Coveralls.wear! 'rails'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
