@@ -27,10 +27,10 @@ module Authentication
     end
 
     def decoded_jwt
-      @decoded_jwt ||= JsonWebToken.decode(token: request_jwt)
+      JsonWebToken.decode(token: request_jwt)
     end
 
     def request_jwt
-      @request_jwt ||= request.headers['Authorization']&.split('=')&.last
+      request.headers['Authorization']&.split('=')&.last
     end
 end
