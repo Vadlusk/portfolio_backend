@@ -6,7 +6,7 @@ class Api::V1::UsersController < ApplicationController
   def authenticate
     @user = User.find_by_email!(user_params[:email])
 
-    @user.authenticate_with_error(user_params[:password])
+    @user.authenticate!(user_params[:password])
 
     render json: { user_id: @user.id, token: new_jwt }, status: :ok
   end

@@ -29,17 +29,16 @@ describe User do
     end
   end
 
-  describe '#authenticate_with_error' do
+  describe '#authenticate!' do
     context 'with a correct password' do
       it 'does not raise an error' do
-        expect { user.authenticate_with_error(password) } .to_not \
-          raise_error AuthenticationError::InvalidPassword
+        expect { user.authenticate!(password) } .to_not raise_error
       end
     end
 
     context 'with an incorrect password' do
       it 'raises an error' do
-        expect { user.authenticate_with_error('incorrect_password') } .to \
+        expect { user.authenticate!('incorrect_password') } .to \
           raise_error AuthenticationError::InvalidPassword
       end
     end
