@@ -1,4 +1,5 @@
-# Rails JWT Authentication Boilerplate [![Coverage Status](https://coveralls.io/repos/github/Vadlusk/JWT_boilerplate/badge.svg?branch=master)](https://coveralls.io/github/Vadlusk/JWT_boilerplate?branch=master) [![CircleCI](https://circleci.com/gh/Vadlusk/JWT_boilerplate.svg?style=shield)](https://circleci.com/gh/Vadlusk/JWT_boilerplate) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/JWT_boilerplate/maintainability)
+# Rails JWT Authentication Boilerplate
+[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/JWT_boilerplate/badge.svg?branch=master)](https://coveralls.io/github/Vadlusk/JWT_boilerplate?branch=master) [![CircleCI](https://circleci.com/gh/Vadlusk/JWT_boilerplate.svg?style=shield)](https://circleci.com/gh/Vadlusk/JWT_boilerplate) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/JWT_boilerplate/maintainability)
 
 A simple Rails api with 3 endpoints (signing up, in, and deleting an account).  
 Written so that only happy path code goes into controllers.
