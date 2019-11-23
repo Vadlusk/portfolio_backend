@@ -8,14 +8,11 @@ require 'coveralls'
 
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 
-SimpleCov.profiles.define 'no_jobs_channels_mailers' do
-  load_profile 'rails'
+SimpleCov.start 'rails' do
   add_filter 'app/jobs'
   add_filter 'app/channels'
   add_filter 'app/mailers'
 end
-
-SimpleCov.start 'no_jobs_channels_mailers'
 Coveralls.wear! 'rails'
 
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
