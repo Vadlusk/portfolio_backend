@@ -7,17 +7,18 @@ Written so that only happy path code goes into controllers.
 ## Setup
 
 1. `git clone https://github.com/Vadlusk/JWT_boilerplate.git <your_desired_project_name>`
-1. [Change the name of the project.](https://stackoverflow.com/questions/42326432/how-to-rename-a-rails-5-application)
+1. `git remote remove origin`
+1. [Change the name of the project.](https://stackoverflow.com/questions/42326432/how-to-rename-a-rails-5-application) Don't forget to include this README and all the badges at the top. Also, change Vadlusk, my github user name, to your github user name.
+1. Setup your github repo.
 1. [Setup CI](https://circleci.com/) - repo already has configuration for CircleCI.
-1. [Setup Coveralls](https://coveralls.io/) - turn the project on, click on details, copy the `repo_token` into `./.coveralls.yml`.
 1. [Setup Code Climate](https://codeclimate.com/dashboard)
-1. Change `JWT_boilerplate` in the top of this README to `<your_desired_project_name>` if you haven't already in step 2.
+1. [Setup Coveralls](https://coveralls.io/) - turn the project on, click on details, copy the `repo_token` and paste into `./.coveralls.yml`.
 1. `bundle install`
 1. `bundle exec figaro install`
 1. Open `config/application.yml` and add 3 ENV variables:  
     `client_id`: a string your client apps will need to know to get authentication access  
     `jwt_string`: a string used to encrypt your JWTs against  
-    `jwt_encryption_algorithm`: [pick one from the list here](https://github.com/jwt/ruby-jwt#algorithms-and-usage) and include it as a string
+    `jwt_encryption_algorithm`: [pick one from the list here](https://github.com/jwt/ruby-jwt#algorithms-and-usage)
 1. `bundle exec rake db:create db:migrate db:test:prepare`
 1. Run tests with `bundle exec rspec`.
 
