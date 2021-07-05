@@ -13,6 +13,7 @@ gem 'puma', '~> 3.12'
 gem 'rack-cors', ">= 1.0.4"
 gem 'rails', '~> 6.0.0'
 gem 'ffi', '~> 1.15.3'
+gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
