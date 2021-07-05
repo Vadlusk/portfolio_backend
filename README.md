@@ -1,16 +1,12 @@
-# Rails JWT Authentication Boilerplate
-[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/JWT_boilerplate/badge.svg?branch=master)](https://coveralls.io/github/Vadlusk/JWT_boilerplate?branch=master) [![CircleCI](https://circleci.com/gh/Vadlusk/JWT_boilerplate.svg?style=shield)](https://circleci.com/gh/Vadlusk/JWT_boilerplate) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/JWT_boilerplate/maintainability)
+# Portfolio backend
+[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio/badge.svg?branch=main)](https://coveralls.io/github/Vadlusk/portfolio?branch=main) [![CircleCI](https://circleci.com/gh/Vadlusk/portfolio_backend/tree/main.svg?style=shield&circle-token=cb2d1c12e45e2f09c448e57d164f01230fcd69e1)](https://circleci.com/gh/Vadlusk/portfolio_backend/tree/main) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio/maintainability)
 
 A simple Rails api with 3 endpoints (signing up, in, and deleting an account).  
 Written so that only happy path code goes into controllers.
 
 ## Setup
 
-1. `git clone https://github.com/Vadlusk/JWT_boilerplate.git <your_desired_project_name>`
-1. `git remote remove origin`
-1. [Change the name of the project.](https://stackoverflow.com/questions/42326432/how-to-rename-a-rails-5-application) Don't forget to include this README and all the badges at the top. Also, change Vadlusk, my github user name, to your github user name.
-1. Setup your github repo.
-1. [Setup CI](https://circleci.com/) - repo already has configuration for CircleCI.
+1. `git clone https://github.com/Vadlusk/portfolio.git <your_desired_project_name>`
 1. [Setup Code Climate](https://codeclimate.com/dashboard)
 1. [Setup Coveralls](https://coveralls.io/) - turn the project on, click on details, copy the `repo_token` and paste into `./.coveralls.yml`.
 1. `bundle install`
@@ -24,16 +20,20 @@ Written so that only happy path code goes into controllers.
 
 ## Endpoints
 
-Both `POST api/v1/users` and `POST api/v1/users/authenticate` work the same way. The only difference is that the former is used for new users and the latter for existing. These two are intended to be the only client_id protected endpoints, unless you'd like to add another endpoint for exchanging refresh tokens for access tokens (and also implement those types of tokens). To use, send:
+`POST api/v1/users` & `POST api/v1/users/authenticate`
+
+Both work the same way. The only difference is that the former is used for new users and the latter for existing. These two are intended to be the only client_id protected endpoints, unless you'd like to add another endpoint for exchanging refresh tokens for access tokens (and also implement those types of tokens). To use, send:
 
 ```
 params  = { email: email, password: password }  
 headers = { "Authorization": "Token token=<client_id>" }
 ```
 
-You will receive a 200 or 204 and a user_id and token. The JWT that is returned in the token key must be sent back on subsequent requests to access the rest of the API.
+You will receive a 200 or 204 respectively and a user_id and token. The JWT that is returned in the token key must be sent back on subsequent requests to access the rest of the API.
 
-`DELETE api/v1/users/:id` is an example of a JWT protected endpoint. To use this and any other endpoint a valid JWT must be sent in the following format as a request header:
+`DELETE api/v1/users/:id`
+
+An example of a JWT protected endpoint. To use this and any other endpoint a valid JWT must be sent in the following format as a request header:
 
 ```
 { "Authorization": "Basic token=<JWT>" }
