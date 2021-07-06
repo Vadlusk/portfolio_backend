@@ -1,19 +1,19 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.3'
+ruby '2.5.1'
 
+gem 'bootsnap'
 gem 'bcrypt', '~> 3.1.7'
-gem 'bootsnap', '>= 1.4.2', require: false
-gem 'coveralls', require: false
+gem 'ffi', '~> 1.15.3'
 gem 'figaro'
 gem 'jwt'
+gem 'listen'
+gem 'puma', '~> 3.11'
 gem 'pg', '>= 0.18', '< 2.0'
-gem 'puma', '~> 3.12'
-gem 'rack-cors', ">= 1.0.4"
+gem 'rack-cors'
 gem 'rails', '~> 6.0.0'
-gem 'ffi', '~> 1.15.3'
-gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dabd025dcbd36a8a60f'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.7'
 # Use Redis adapter to run Action Cable in production
@@ -22,16 +22,18 @@ gem 'mimemagic', github: 'mimemagicrb/mimemagic', ref: '01f92d86d15d85cfd0f20dab
 # gem 'image_processing', '~> 1.2'
 
 group :development, :test do
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'coveralls'
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'pry'
   gem 'rspec-rails'
+  gem 'rubocop', '~> 0.77.0', require: false
+  gem 'shoulda-matchers'
   gem 'simplecov'
 end
 
 group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
 end
 
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
