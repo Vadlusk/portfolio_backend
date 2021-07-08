@@ -45,5 +45,7 @@ def make_request(verb)
     delete path, headers: headers
   elsif verb == :get
     get path, headers: headers
+  elsif verb == :post
+    post path, headers: headers
   end
 end

@@ -9,7 +9,7 @@ describe 'GET /api/v1/accounts' do
   it_behaves_like 'a JWT protected endpoint', :get
 
   context 'with valid credentials' do
-    before do
+    before(:each) do
       create_list(:account, 3, user_id: user.id)
       create_list(:account, 3)
 

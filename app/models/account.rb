@@ -1,5 +1,7 @@
 class Account < ApplicationRecord
-  validates_presence_of :name, :balance
+  validates :name, presence: true, uniqueness: true
+  validates :api_key, presence: true
+  validates :secret, presence: true
 
   belongs_to :user
 end

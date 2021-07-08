@@ -1,7 +1,9 @@
 FactoryBot.define do
   factory :account do
     user
-    name    { %w[CoinbasePro Coinbase RobinHood].sample }
-    balance { rand(-15000.00...1000000) }
+    name    { |n| "CoinbasePro#{n}" }
+    balance { rand(-15000.00...1000000.00) }
+    api_key { 'api_key' }
+    secret  { 'secret' }
   end
 end
