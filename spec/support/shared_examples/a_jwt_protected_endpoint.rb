@@ -43,5 +43,7 @@ end
 def make_request(verb)
   if verb == :delete
     delete path, headers: headers
+  elsif verb == :get
+    get path, headers: headers
   end
 end

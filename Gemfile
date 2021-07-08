@@ -33,7 +33,4 @@ group :development, :test do
   gem 'simplecov'
 end
 
-group :development do
-end
-
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
