@@ -18,5 +18,15 @@ class CreateTables < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
+
+    create_table :assets do |t|
+      t.string :remote_id
+      t.string :balance
+      t.string :currency
+
+      t.references :account, foreign_key: true, index: true, on_delete: :cascade
+
+      t.timestamps
+    end
   end
 end

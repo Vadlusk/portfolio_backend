@@ -27,6 +27,16 @@ ActiveRecord::Schema.define(version: 2018_11_28_022703) do
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
+  create_table "assets", force: :cascade do |t|
+    t.string "remote_id"
+    t.string "balance"
+    t.string "currency"
+    t.bigint "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_assets_on_account_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -35,4 +45,5 @@ ActiveRecord::Schema.define(version: 2018_11_28_022703) do
   end
 
   add_foreign_key "accounts", "users"
+  add_foreign_key "assets", "accounts"
 end
