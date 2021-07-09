@@ -4,7 +4,7 @@ class Api::V1::AccountsController < ApplicationController
   before_action :authenticate_jwt, only: %i[create index]
 
   def create
-    account = Account.create!(coin_params.merge(user_id: jwt_user.id))
+    account = Account.create!(account_params.merge(user_id: jwt_user.id))
 
     render json: { account: account, token: new_jwt }, status: :created, except: INTERNAL_ATTRIBUTES
   end
@@ -17,7 +17,7 @@ class Api::V1::AccountsController < ApplicationController
 
   private
 
-    def coin_params
+    def account_params
       params.permit(:name, :api_key, :secret, :passphrase)
     end
 end

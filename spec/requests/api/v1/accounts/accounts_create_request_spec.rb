@@ -7,7 +7,7 @@ describe 'POST /api/v1/accounts' do
   let(:params)  do
     {
       name: 'CoinbasePro',
-      api_key: 'api_key',
+      apiKey: 'api_key',
       secret: 'secret',
       passphrase: 'passphrase'
      }
