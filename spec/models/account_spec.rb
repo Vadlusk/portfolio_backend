@@ -31,5 +31,6 @@ describe Account do
 
   describe 'relationships' do
     it { should belong_to :user }
+    it { should have_many :assets }
   end
 end

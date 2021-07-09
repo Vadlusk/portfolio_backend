@@ -34,4 +34,8 @@ describe User do
       end
     end
   end
+
+  describe 'relationships' do
+    it { should have_many :accounts }
+  end
 end
