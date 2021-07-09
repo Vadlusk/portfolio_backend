@@ -5,6 +5,7 @@ ruby '2.5.1'
 
 gem 'bootsnap'
 gem 'bcrypt', '~> 3.1.7'
+gem 'faraday'
 gem 'ffi', '~> 1.15.3'
 gem 'figaro'
 gem 'jwt'
