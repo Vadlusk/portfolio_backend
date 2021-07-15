@@ -1,1 +1,1 @@
-ACCOUNT_ATTRS = %i[id user_id name balance updated_at created_at].freeze
+ACCOUNT_ATTRS = %i[name balance].freeze

@@ -18,6 +18,8 @@ describe 'POST /api/v1/accounts' do
 
   context 'with valid credentials' do
     before do
+      expect(Account.where(user_id: user.id, name: 'CoinbasePro').length).to eq(0)
+
       post path, headers: headers, params: params
     end
 
@@ -32,6 +34,14 @@ describe 'POST /api/v1/accounts' do
     it 'returns the account' do
       expect(json_response[:account][:name]).to eq('CoinbasePro')
       expect(json_response[:account].keys).to contain_exactly(*ACCOUNT_ATTRS)
+    end
+
+    it 'attaches a list of associated assets with the account' do
+      expect(json_response[:account][:assets].length).to eq(3)
+    end
+
+    it 'calls the appropriate third-party api' do
+
     end
 
     it 'returns a new jwt' do

@@ -10,22 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_28_022703) do
+ActiveRecord::Schema.define(version: 2021_07_14_232532) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "accounts", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "name", null: false
-    t.integer "balance"
-    t.string "api_key", null: false
-    t.string "secret", null: false
-    t.string "passphrase"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_accounts_on_user_id"
-  end
+# Could not dump table "accounts" because of following StandardError
+#   Unknown type 'category_type' for column 'category'
 
   create_table "assets", force: :cascade do |t|
     t.string "remote_id"
@@ -37,6 +28,15 @@ ActiveRecord::Schema.define(version: 2018_11_28_022703) do
     t.index ["account_id"], name: "index_assets_on_account_id"
   end
 
+  create_table "coin_gecko_coin_ids", force: :cascade do |t|
+    t.string "coin_gecko_id"
+    t.string "symbol"
+    t.string "name"
+  end
+
+# Could not dump table "transactions" because of following StandardError
+#   Unknown type 'transaction_type' for column 'transaction_type'
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -46,4 +46,5 @@ ActiveRecord::Schema.define(version: 2018_11_28_022703) do
 
   add_foreign_key "accounts", "users"
   add_foreign_key "assets", "accounts"
+  add_foreign_key "transactions", "accounts"
 end
