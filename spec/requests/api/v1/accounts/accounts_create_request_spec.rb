@@ -7,9 +7,10 @@ describe 'POST /api/v1/accounts' do
   let(:params)  do
     {
       name: 'CoinbasePro',
-      apiKey: 'api_key',
+      api_key: 'api_key',
       secret: 'secret',
-      passphrase: 'passphrase'
+      passphrase: 'passphrase',
+      category: 'crypto_exchange'
      }
   end
   let(:path)    { api_v1_accounts_path }
@@ -33,15 +34,6 @@ describe 'POST /api/v1/accounts' do
 
     it 'returns the account' do
       expect(json_response[:account][:name]).to eq('CoinbasePro')
-      expect(json_response[:account].keys).to contain_exactly(*ACCOUNT_ATTRS)
-    end
-
-    it 'attaches a list of associated assets with the account' do
-      expect(json_response[:account][:assets].length).to eq(3)
-    end
-
-    it 'calls the appropriate third-party api' do
-
     end
 
     it 'returns a new jwt' do

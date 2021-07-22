@@ -1,1 +1,1 @@
-ACCOUNT_ATTRS = %i[name balance].freeze
+ACCOUNT_ATTRS = %i[name assets category].freeze

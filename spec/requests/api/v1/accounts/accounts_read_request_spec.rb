@@ -10,8 +10,8 @@ describe 'GET /api/v1/accounts' do
 
   context 'with valid credentials' do
     before(:each) do
-      create_list(:account, 3, user_id: user.id)
-      create_list(:account, 3)
+      create(:account, user_id: user.id)
+      create(:account)
 
       get path, headers: headers
     end
@@ -21,7 +21,7 @@ describe 'GET /api/v1/accounts' do
     end
 
     it 'returns all accounts for a user' do
-      expect(json_response[:accounts].length).to eq(3)
+      expect(json_response[:accounts].length).to eq(1)
       expect(json_response[:accounts][0].keys).to contain_exactly(*ACCOUNT_ATTRS)
     end
 

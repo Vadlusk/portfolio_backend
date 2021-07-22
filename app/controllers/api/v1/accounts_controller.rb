@@ -4,7 +4,9 @@ class Api::V1::AccountsController < ApplicationController
   before_action :authenticate_jwt, only: %i[create index]
 
   def create
-    account = CreateAccount.new(account_params, jwt_user.id).create!
+    account = Account.create!(account_params.merge(user_id: jwt_user.id))
+
+    # account.fetch_history
 
     render json: { account: account, token: new_jwt }, status: :created, except: INTERNAL_ATTRIBUTES
   end
@@ -18,6 +20,6 @@ class Api::V1::AccountsController < ApplicationController
   private
 
     def account_params
-      params.permit(:name, :api_key, :secret, :passphrase)
+      params.permit(:name, :category, :api_key, :secret, :passphrase)
     end
 end
