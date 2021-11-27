@@ -45,7 +45,7 @@ class CoinbaseProAdapter
 
       {
         'CB-ACCESS-KEY': @account.api_key,
-        'CB-ACCESS-TIMESTAMP': timestamp.to_s,
+        'CB-ACCESS-TIMESTAMP': timestamp.to_str,
         'CB-ACCESS-PASSPHRASE': @account.passphrase,
         'CB-ACCESS-SIGN': signature
       }

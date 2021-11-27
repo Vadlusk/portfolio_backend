@@ -11,7 +11,7 @@ class ApplicationRecord < ActiveRecord::Base
     else
       query_results[0][0] && JSON
         .parse(query_results[0][0])
-        .map { |result| result.deep_transform_keys { |key| key.to_s.camelize(:lower) } }
+        .map { |result| result.deep_transform_keys { |key| key.to_str.camelize(:lower) } }
     end
   end
 end
