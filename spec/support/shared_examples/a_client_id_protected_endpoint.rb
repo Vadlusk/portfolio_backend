@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples 'a client ID protected endpoint' do
   context 'without an authorization header' do
     it 'responds with a 401' do
@@ -8,7 +10,7 @@ shared_examples 'a client ID protected endpoint' do
   end
 
   context 'with an invalid client ID' do
-    let(:headers) { { 'Authorization': "Token token=not_right" } }
+    let(:headers) { { 'Authorization': 'Token token=not_right' } }
 
     it 'responds with a 401' do
       post path, params: params, headers: headers

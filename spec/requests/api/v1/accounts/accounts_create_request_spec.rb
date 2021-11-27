@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'POST /api/v1/accounts' do
@@ -11,9 +13,9 @@ describe 'POST /api/v1/accounts' do
       secret: 'secret',
       passphrase: 'passphrase',
       category: 'crypto_exchange'
-     }
+    }
   end
-  let(:path)    { api_v1_accounts_path }
+  let(:path) { api_v1_accounts_path }
 
   it_behaves_like 'a JWT protected endpoint', :post
 
@@ -37,7 +39,7 @@ describe 'POST /api/v1/accounts' do
     end
 
     it 'returns a new jwt' do
-      expect { JsonWebToken.decode(token: json_response[:token]) } .to_not raise_error
+      expect { JsonWebToken.decode(token: json_response[:token]) }.to_not raise_error
     end
   end
 end

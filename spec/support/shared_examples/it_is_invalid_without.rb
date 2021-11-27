@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples 'it is invalid without' do |attributes|
   attributes.each do |attribute|
     it "a(n) #{attribute}" do

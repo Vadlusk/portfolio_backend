@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 
 require File.expand_path('../config/environment', __dir__)
@@ -6,7 +8,7 @@ require 'spec_helper'
 require 'simplecov'
 require 'coveralls'
 
-abort("The Rails environment is running in production mode!") if Rails.env.production?
+abort('The Rails environment is running in production mode!') if Rails.env.production?
 
 SimpleCov.start 'rails' do
   add_filter 'app/jobs'
@@ -15,7 +17,7 @@ SimpleCov.start 'rails' do
 end
 Coveralls.wear! 'rails'
 
-Dir[Rails.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
+Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
 begin
   ActiveRecord::Migration.maintain_test_schema!

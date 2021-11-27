@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'GET /api/v1/accounts' do
@@ -26,7 +28,7 @@ describe 'GET /api/v1/accounts' do
     end
 
     it 'returns a new jwt' do
-      expect { JsonWebToken.decode(token: json_response[:token]) } .to_not raise_error
+      expect { JsonWebToken.decode(token: json_response[:token]) }.to_not raise_error
     end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authentication
   include ActionController::HttpAuthentication::Token::ControllerMethods
 
@@ -16,21 +18,17 @@ module Authentication
     jwt_user
   end
 
-  def check_ownership
-    raise AuthenticationError::ResourceNotOwnedByRequester unless User.find(params['id']) == jwt_user
-  end
-
   private
 
-    def jwt_user
-      @jwt_user ||= User.find(decoded_jwt.first['user_id'])
-    end
+  def jwt_user
+    @jwt_user ||= User.find(decoded_jwt.first['user_id'])
+  end
 
-    def decoded_jwt
-      JsonWebToken.decode(token: request_jwt)
-    end
+  def decoded_jwt
+    JsonWebToken.decode(token: request_jwt)
+  end
 
-    def request_jwt
-      request.headers['Authorization']&.split('=')&.last
-    end
+  def request_jwt
+    request.headers['Authorization']&.split('=')&.last
+  end
 end

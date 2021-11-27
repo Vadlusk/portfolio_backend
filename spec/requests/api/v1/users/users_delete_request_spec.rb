@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'DELETE /api/v1/users/:id' do
@@ -10,7 +12,7 @@ describe 'DELETE /api/v1/users/:id' do
 
   context 'with valid credentials' do
     before do
-      expect { User.find(user.id) } .to_not raise_error
+      expect { User.find(user.id) }.to_not raise_error
 
       delete path, headers: headers
     end
@@ -20,7 +22,7 @@ describe 'DELETE /api/v1/users/:id' do
     end
 
     it 'deletes a user' do
-      expect { User.find(user.id) } .to raise_error(ActiveRecord::RecordNotFound)
+      expect { User.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

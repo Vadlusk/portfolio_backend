@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples 'a JWT protected endpoint' do |verb|
   context 'without a JWT' do
     let(:headers) { nil }
@@ -41,11 +43,12 @@ shared_examples 'a JWT protected endpoint' do |verb|
 end
 
 def make_request(verb)
-  if verb == :delete
+  case verb
+  when :delete
     delete path, headers: headers
-  elsif verb == :get
+  when :get
     get path, headers: headers
-  elsif verb == :post
+  when :post
     post path, headers: headers
   end
 end

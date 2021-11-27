@@ -1,25 +1,53 @@
-INTERNAL_ATTRIBUTES = %i[api_key secret passphrase id user_id updated_at created_at]
+# frozen_string_literal: true
 
-class Api::V1::AccountsController < ApplicationController
-  before_action :authenticate_jwt, only: %i[create index]
+INTERNAL_ATTRIBUTES = %i[api_key secret passphrase user_id updated_at created_at].freeze
 
-  def create
-    account = Account.create!(account_params.merge(user_id: jwt_user.id))
+module Api
+  module V1
+    class AccountsController < ApplicationController
+      before_action :authenticate_jwt
+      before_action :set_account, only: %i[update destroy]
 
-    # account.fetch_history
+      def create
+        render json: {
+          account: CreateAccount.new(params, jwt_user).run,
+          token: new_jwt
+        }.deep_transform_keys { |key| key.to_s.camelize(:lower) },
+          status: :created,
+          except: INTERNAL_ATTRIBUTES,
+          include: %i[assets transactions]
+      end
 
-    render json: { account: account, token: new_jwt }, status: :created, except: INTERNAL_ATTRIBUTES
-  end
+      def index
+        render json: {
+          accounts: Account.where(user_id: jwt_user.id),
+          token: new_jwt
+        }.deep_transform_keys { |key| key.to_s.camelize(:lower) },
+          status: :ok,
+          except: INTERNAL_ATTRIBUTES,
+          include: %i[assets transactions]
+      end
 
-  def index
-    accounts = Account.where(user_id: jwt_user.id)
+      def update
+        byebug
+        @account.update
 
-    render json: { accounts: accounts, token: new_jwt }, status: :ok, except: INTERNAL_ATTRIBUTES, include: :assets
-  end
+        render json: { token: new_jwt }
+      end
 
-  private
+      def destroy
+        @account.destroy
 
-    def account_params
-      params.permit(:name, :category, :api_key, :secret, :passphrase)
+        render json: { token: new_jwt }
+      end
+
+      private
+
+      def set_account
+        @account ||= Account.find(params[:id])
+      end
+
+      def render_account(account, status)end
     end
+  end
 end

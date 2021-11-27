@@ -1,53 +1,56 @@
+# frozen_string_literal: true
+require 'openssl'
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 class CallExchange
-  def initialize(api_info)
-    @key        = api_info[:api_key]
-    @secret     = api_info[:secret]
-    @passphrase = api_info[:passphrase]
-    @connection = Faraday.new('https://api.pro.coinbase.com')
+  def initialize(base_url:)
+    @connection = Faraday.new(base_url)
   end
 
-  def assets
-    JSON.parse(response('/accounts').body, symbolize_names: true)
-  end
+  def call(path, headers, pagination_options = nil)
+    res = JSON.parse(response(path, headers).body, symbolize_names: true)
 
-  def transfers
-    JSON.parse(response('/transfers').body, symbolize_names: true)
-  end
+    raise res[1][0][:id] if res.is_a?(Array) && res[1].is_a?(Array) && res[1][0][:id] == 'invalid_scope'
 
-  def transactions(account_ids)
-    account_ids.map do |account_id|
-      JSON.parse(response("/accounts/#{account_id}/ledger").body, symbolize_names: true)
-    end
-  end
-
-  def orders
-    JSON.parse(response('/orders', { status: 'all' }).body, symbolize_names: true)
+    pagination_options ? parse_paginated_response(res, pagination_options, headers) : res
   end
 
   private
 
-    def response(path, params = {})
-      @connection.get(path) do |request|
-        timestamp = Time.now.to_i
+  def response(path, headers)
+    @connection.get(base_path(path)) do |request|
+      request.params = params(path)
 
-        request.params = params
-
-        request.headers['CB-ACCESS-KEY'] = @key
-        request.headers['CB-ACCESS-SIGN'] = signature(params.empty? ? path : path + '?status=all', nil, timestamp)
-        request.headers['CB-ACCESS-TIMESTAMP'] = timestamp.to_s
-        request.headers['CB-ACCESS-PASSPHRASE'] = @passphrase
+      headers.call(path).each_pair do |key, value|
+        request.headers[key] = value
       end
     end
+  end
 
-    def signature(request_path = '', body = '', timestamp = nil, method = 'GET')
-      body = body.to_json if body.is_a?(Hash)
-      timestamp = Time.now.to_i if !timestamp
-
-      what = "#{timestamp}#{method}#{request_path}#{body}";
-
-      # create a sha256 hmac with the secret
-      secret = Base64.decode64(@secret)
-      hash  = OpenSSL::HMAC.digest('sha256', secret, what)
-      Base64.strict_encode64(hash)
+  def base_path(path)
+    if path.include?('?')
+      path.split('?')[0]
+    else
+      path
     end
+  end
+
+  def params(path)
+    if path.include?('?')
+      path.split('?')[1].split('&').each_with_object({}) do |criteria, result|
+        attribute, value = criteria.split('=')
+        result[attribute.to_sym] = value
+      end
+    else
+      {}
+    end
+  end
+
+  def parse_paginated_response(res, options, headers)
+    data_from_paginated_call = []
+
+    data_from_paginated_call.push(res[options[:data_key]])
+    call(options[:new_path].call(res), headers, options) if options[:more_data_condition].call(res)
+
+    data_from_paginated_call.flatten
+  end
 end

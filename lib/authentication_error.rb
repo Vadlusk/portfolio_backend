@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthenticationError < StandardError
   class InvalidID < AuthenticationError
     def message
@@ -26,12 +28,6 @@ class AuthenticationError < StandardError
   class InvalidPassword < AuthenticationError
     def message
       'Password is incorrect'
-    end
-  end
-
-  class ResourceNotOwnedByRequester < AuthenticationError
-    def message
-      'Resource does not belong to current user'
     end
   end
 end

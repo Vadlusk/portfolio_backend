@@ -1,68 +1,107 @@
+# frozen_string_literal: true
+
 class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   has_secure_password
 
-  has_many :accounts
+  has_many :accounts, dependent: :delete_all
 
   def authenticate!(password)
     raise AuthenticationError::InvalidPassword unless authenticate(password)
   end
 
-  def history
+  def totals
+    return { assets: [] } if accounts.count.zero?
+
+    current_totals = asset_totals && JSON.parse(asset_totals)
+    asset_costs = average_asset_costs ? JSON.parse(average_asset_costs) : []
+
+    all_assets = current_totals && current_totals.each do |asset|
+      asset_cost = !asset_costs.empty? && asset_costs.select { |cost| cost['currency'] == asset['currency'] }[0]
+      asset_cost ? asset.merge!(asset_cost) : nil
+    end
+
+    {
+      fiat_spent: total('buy'),
+      fiat_earned: total('sell'),
+      interest: total('interest'),
+      free: total('free'),
+      fees: total_fees,
+      assets: all_assets
+    }
+  end
+
+  def update_history
+    # if updated_at < 1.day.ago
+    accounts.where('name IS NOT NULL').find_each(&:update_history)
+
+    update_attribute(:updated_at, DateTime.now)
+    # end
+  end
+
+  private
+
+  def total(type)
     query = <<-SQL
-      WITH orders_and_transfers_agg AS (
-        SELECT
-          t.id,
-          CAST(t.withdraw_or_deposit AS VARCHAR) as record_type,
-          a.name AS account_name,
-          t.account_id,
-          t.amount,
-          t.occurred_at,
-          t.fees AS total_fees,
-          t.currency,
+      SELECT SUM(t.total_price)
+      FROM users u
+        JOIN accounts a ON u.id = a.user_id
+        JOIN transactions t ON t.account_id = a.id
+      WHERE user_id = #{id}
+        AND t.entry_type = '#{type}'
+    SQL
 
-          NULL AS price,
-          NULL AS executed_value,
-          NULL AS side,
-          NULL AS requested_at
-        FROM transfers t
-          LEFT JOIN accounts a ON a.id = t.account_id
-        GROUP BY 1, a.name
+    ActiveRecord::Base.connection.execute(query).values.flatten[0]
+  end
 
-        UNION
-
-        SELECT
-          o.id,
-          CAST(o.market_or_limit AS VARCHAR),
-          a.name AS account_name,
-          o.account_id,
-          o.amount,
-          o.occurred_at,
-          o.total_fees,
-          o.currency,
-
-          o.price,
-          o.executed_value,
-          o.side,
-          o.requested_at
-        FROM orders o
-          LEFT JOIN accounts a ON a.id = o.account_id
-        WHERE o.status = 'done'
-        GROUP BY 1, a.name
-      ), accounts_agg AS (
-        SELECT
-          date_trunc('day', ota.occurred_at) AS title,
-          json_agg(ota.*) AS data
-        FROM accounts a
-          LEFT JOIN orders_and_transfers_agg ota ON ota.account_id = a.id
-        WHERE a.user_id = 1
-        GROUP BY date_trunc('day', ota.occurred_at)
-        ORDER BY date_trunc('day', ota.occurred_at) DESC
-      )
-      SELECT json_agg(aa.*) AS history
-      FROM accounts_agg aa;
+  def total_fees
+    query = <<-SQL
+      SELECT ROUND(SUM(t.fees), 2)
+      FROM users u
+        JOIN accounts a ON u.id = a.user_id
+        JOIN transactions t ON t.account_id = a.id
+      WHERE user_id = #{id}
     SQL
 
     ActiveRecord::Base.connection.execute(query).values
+  end
+
+  def asset_totals
+    query = <<-SQL
+      WITH asset_totals AS (
+        SELECT a.currency, SUM(a.current_balance) as total_balance
+        FROM users u
+          JOIN accounts ac ON u.id = ac.user_id
+          JOIN assets a ON a.account_id = ac.id
+        WHERE a.current_balance > 0
+          AND user_id = #{id}
+        GROUP BY currency
+      )
+      SELECT json_agg(at.*)
+      FROM asset_totals at
+    SQL
+
+    ActiveRecord::Base.connection.execute(query).values.flatten[0]
+  end
+
+  def average_asset_costs
+    query = <<-SQL
+      WITH average_costs AS (
+        SELECT
+          a.currency,
+          SUM(t.total_price) / SUM(t.amount) AS avg_cost
+        FROM accounts ac
+          JOIN assets a ON a.account_id = ac.id
+          JOIN transactions t ON split_part(t.currency, '-', 1) = a.currency
+        WHERE t.entry_type = 'buy'
+          AND a.current_balance > 0
+          AND user_id = #{id}
+        GROUP BY a.currency
+      )
+      SELECT json_agg(ac.*)
+      FROM average_costs ac
+    SQL
+
+    ActiveRecord::Base.connection.execute(query).values.flatten[0]
   end
 end
