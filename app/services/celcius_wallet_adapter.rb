@@ -46,7 +46,7 @@ class CelciusWalletAdapter
 
   def parse_assets(api_data:)
     api_data[:balance].keys.map do |key|
-      currency = key.to_str.upcase
+      currency = key.to_s.upcase
 
       {
         remote_id: currency,
