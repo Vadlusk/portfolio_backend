@@ -28,7 +28,6 @@ jobs:
           command: |
             gem install bundler
             bundle install --jobs=4 --retry=3 --path vendor/bundle
-      - run: sudo apt-get install postgresql-9.6 postgresql-client-9.6
       - save_cache:
           paths:
             - ./vendor/bundle
