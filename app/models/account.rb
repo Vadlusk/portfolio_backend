@@ -1,25 +1,17 @@
 # frozen_string_literal: true
 
 class Account < ApplicationRecord
-  validates :nickname, uniqueness: { scope: %i[user_id name] }
-  validates :api_key, uniqueness: { scope: %i[user_id name] }
+  validates :api_key,  uniqueness: { scope: %i[user_id name],     conditions: -> { where.not(name: nil) } }
+  validates :nickname, uniqueness: { scope: %i[user_id nickname], conditions: -> { where.not(nickname: nil) } }
+  validates :nickname, uniqueness: { scope: %i[user_id],          conditions: -> { where(name: nil) } }
 
   belongs_to :user
+  has_many :assets,       dependent: :destroy
+  has_many :transactions, dependent: :destroy
 
-  has_many :assets, dependent: :delete_all
-  has_many :transactions, dependent: :delete_all
-
-  def verify_credentials
-    exchange_adapter.verify_credentials
-  end
-
-  def fetch_history
-    exchange_adapter.fetch_history
-  end
-
-  def update_history
-    exchange_adapter.update_history
-  end
+  delegate :verify_credentials, to: :exchange_adapter
+  delegate :fetch_history,      to: :exchange_adapter
+  delegate :update_history,     to: :exchange_adapter
 
   private
 

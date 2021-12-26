@@ -73,7 +73,7 @@ class CelciusWalletAdapter
       elsif %w[referred_award referrer_award promo_code_reward].include?(data[:nature])
         {
           remote_id: data[:id],
-          details: data[:nature].gsub(/\_/, ' '),
+          details: data[:nature].gsub(/_/, ' '),
           currency: data[:coin],
           entry_type: 'free',
           amount: data[:amount]&.to_f,

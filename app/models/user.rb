@@ -4,26 +4,35 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   has_secure_password
 
-  has_many :accounts, dependent: :delete_all
+  has_many :accounts, dependent: :destroy
 
   def authenticate!(password)
     raise AuthenticationError::InvalidPassword unless authenticate(password)
   end
 
   def totals
-    return { assets: [] } if accounts.count.zero?
+    if accounts.count.zero?
+      return {
+        fiat_spent: nil,
+        fiat_from_sales: nil,
+        interest: nil,
+        free: nil,
+        fees: nil,
+        assets: []
+      }
+    end
 
     current_totals = asset_totals && JSON.parse(asset_totals)
     asset_costs = average_asset_costs ? JSON.parse(average_asset_costs) : []
 
-    all_assets = current_totals && current_totals.each do |asset|
+    all_assets = current_totals&.each do |asset|
       asset_cost = !asset_costs.empty? && asset_costs.select { |cost| cost['currency'] == asset['currency'] }[0]
       asset_cost ? asset.merge!(asset_cost) : nil
     end
 
     {
       fiat_spent: total('buy'),
-      fiat_earned: total('sell'),
+      fiat_from_sales: total('sell'),
       interest: total('interest'),
       free: total('free'),
       fees: total_fees,
@@ -63,7 +72,7 @@ class User < ApplicationRecord
       WHERE user_id = #{id}
     SQL
 
-    ActiveRecord::Base.connection.execute(query).values
+    ActiveRecord::Base.connection.execute(query).values.flatten[0]
   end
 
   def asset_totals

@@ -11,7 +11,7 @@ shared_examples 'a JWT protected endpoint' do |verb|
     end
   end
 
-  context 'when the JWT has expired' do
+  context 'with an expired JWT' do
     let(:jwt) { JsonWebToken.encode(payload: { user_id: user.id }, expiration: -10) }
 
     it 'responds with a 401' do
@@ -21,7 +21,7 @@ shared_examples 'a JWT protected endpoint' do |verb|
     end
   end
 
-  context 'when JWT\'s user ID is invalid' do
+  context 'with an invalid user ID in the JWT' do
     let(:jwt) { JsonWebToken.encode(payload: { user_id: 'not_an_id' }) }
 
     it 'responds with a 404' do
@@ -31,7 +31,7 @@ shared_examples 'a JWT protected endpoint' do |verb|
     end
   end
 
-  context 'when the JWT has been tampered with' do
+  context 'with a compromised JWT' do
     it 'responds with a 401' do
       jwt[-1] = '?'
 

@@ -2,9 +2,13 @@
 
 class CreateTables < ActiveRecord::Migration[6.0]
   def change
+    enable_extension('citext')
+
     create_table :users do |t|
-      t.string :email, null: false
+      t.citext :email, null: false
       t.string :password_digest, null: false
+
+      t.index :email, unique: true
 
       t.timestamps default: -> { 'CURRENT_TIMESTAMP' }
     end

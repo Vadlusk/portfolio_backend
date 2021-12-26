@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FetchHistoryJob < ApplicationJob
   queue_as :default
 

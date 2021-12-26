@@ -12,8 +12,13 @@ class CoinbaseAdapter
     res = api_service.call('/v2/user', headers)
 
     if res[:errors]
-      raise ThirdPartyAuthenticationError::InvalidApiKey if res[:errors].any? { |error| error[:message] == 'invalid api key' }
-      raise ThirdPartyAuthenticationError::InvalidSecret if res[:errors].any? { |error| error[:message] == 'invalid signature' } # user secret being incorrect will make header signature incorrect
+      raise ThirdPartyAuthenticationError::InvalidApiKey if res[:errors].any? do |error|
+                                                              error[:message] == 'invalid api key'
+                                                            end
+      # user secret being incorrect will make header signature incorrect
+      raise ThirdPartyAuthenticationError::InvalidSecret if res[:errors].any? do |error|
+                                                              error[:message] == 'invalid signature'
+                                                            end
     end
 
     true
@@ -56,8 +61,8 @@ class CoinbaseAdapter
   def pagination_options
     {
       data_key: :data,
-      more_data_condition: lambda { |res| res[:pagination] && !!res[:pagination][:next_uri] },
-      new_path: lambda { |res| res[:pagination] && res[:pagination][:next_uri] }
+      more_data_condition: ->(res) { res[:pagination] && !res[:pagination][:next_uri].nil? },
+      new_path: ->(res) { res[:pagination] && res[:pagination][:next_uri] }
     }
   end
 
@@ -116,7 +121,7 @@ class CoinbaseAdapter
           remote_id: data[:id],
           entry_type: 'buy',
           details: nil,
-          currency: data[:amount][:currency] + '-' + data[:native_amount][:currency],
+          currency: "#{data[:amount][:currency]}-#{data[:native_amount][:currency]}",
           amount: data[:amount][:amount].to_f.abs,
           price_per_coin: data[:native_amount][:amount].to_f / data[:amount][:amount].to_f,
           total_price: data[:native_amount][:amount].to_f,
@@ -127,7 +132,7 @@ class CoinbaseAdapter
           remote_id: data[:id],
           entry_type: 'sell',
           details: nil,
-          currency: data[:amount][:currency] + '-' + data[:native_amount][:currency],
+          currency: "#{data[:amount][:currency]}-#{data[:native_amount][:currency]}",
           amount: data[:amount][:amount].to_f.abs,
           price_per_coin: data[:native_amount][:amount].to_f.abs / data[:amount][:amount].to_f.abs,
           total_price: data[:native_amount][:amount].to_f.abs,

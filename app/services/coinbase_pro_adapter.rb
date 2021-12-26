@@ -65,7 +65,7 @@ class CoinbaseProAdapter
   def parse_transactions(api_data:)
     api_data.map do |data|
       if data[:type] == 'withdraw'
-        sent_to = data[:details][:sent_to_address] ? data[:details][:sent_to_address] : 'Coinbase'
+        sent_to = data[:details][:sent_to_address] || 'Coinbase'
         asset = Asset.where(remote_id: data[:details][:coinbase_account_id])[0]
         currency = asset ? asset[:currency] : ''
 
@@ -83,12 +83,16 @@ class CoinbaseProAdapter
       elsif data[:type] == 'deposit'
         usd_deposit = ActiveModel::Type::Boolean.new.cast(data[:details][:is_instant_usd])
         asset = Asset.where(remote_id: data[:details][:coinbase_account_id])[0]
-        currency = usd_deposit ? 'USD' : asset ? asset[:currency] : ''
+        currency = if usd_deposit
+                     'USD'
+                   else
+                     asset ? asset[:currency] : ''
+                   end
 
         {
           remote_id: data[:id],
           entry_type: 'transfer',
-          details: "from #{} to Coinbase Pro",
+          details: 'from  to Coinbase Pro',
           currency: currency,
           amount: data[:amount]&.to_f,
           price_per_coin: nil,

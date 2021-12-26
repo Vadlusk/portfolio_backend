@@ -16,7 +16,7 @@ module Api
       private
 
       def set_asset
-        @asset ||= Asset.where(currency: params[:id]).first
+        @asset ||= Asset.find(params[:id])
       end
     end
   end

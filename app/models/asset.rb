@@ -2,6 +2,7 @@
 
 class Asset < ApplicationRecord
   validates :current_balance, :currency, presence: true
+
   validates :currency, uniqueness: { scope: %i[account_id] }
 
   belongs_to :account

@@ -3,13 +3,11 @@
 require 'rails_helper'
 
 describe 'POST /api/v1/users' do
-  let(:path)     { api_v1_users_path }
-  let(:email)    { 'valid@mail.com' }
-  let(:password) { 'password' }
-  let(:params)   { { email: email, password: password } }
-  let(:headers)  { { 'Authorization': "Token token=#{ENV['client_id']}" } }
+  include_context 'new user'
 
-  it_behaves_like 'a client ID protected endpoint'
+  let(:path) { api_v1_users_path }
+
+  include_examples 'a client ID protected endpoint'
 
   context 'with email and password in params and client ID in headers' do
     before do
@@ -26,12 +24,10 @@ describe 'POST /api/v1/users' do
       expect(response.status).to eq(201)
     end
 
-    it 'responds with the correct user id and JWT' do
+    it 'responds with the correct user in a JWT' do
       created_user = User.all.first
       decoded_token = JsonWebToken.decode(token: json_response[:token])
 
-      expect(json_response.keys).to include(:user_id, :token)
-      expect(json_response[:user_id]).to eq(created_user[:id])
       expect(decoded_token[0]['user_id']).to eq(created_user[:id])
     end
   end

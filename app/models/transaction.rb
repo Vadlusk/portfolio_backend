@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Transaction < ApplicationRecord
-  attribute :account_name, :string
-
   validates :remote_id, :entry_type, :currency, presence: true
+
+  attribute :account_name, :string
 
   enum entry_type: {
     buy: 'buy',

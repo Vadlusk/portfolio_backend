@@ -4,10 +4,10 @@ module Api
   module V1
     class UsersController < ApplicationController
       before_action :authenticate_client_id, only: %i[authenticate create]
-      before_action :authenticate_jwt, only: %i[destroy]
+      before_action :authenticate_jwt, only: %i[update destroy]
 
       def authenticate
-        @user = User.find_by!(email: user_params[:email])
+        @user = User.find_by!('email ILIKE ?', user_params[:email])
 
         @user.authenticate!(user_params[:password])
 
@@ -22,8 +22,14 @@ module Api
         render json: { token: new_jwt }, status: :created
       end
 
+      def update
+        jwt_user.update(user_params)
+
+        render json: { token: new_jwt }, status: :ok
+      end
+
       def destroy
-        jwt_user.destroy
+        jwt_user.destroy!
 
         head :no_content
       end

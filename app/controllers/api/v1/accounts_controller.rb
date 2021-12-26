@@ -13,9 +13,9 @@ module Api
           account: CreateAccount.new(params, jwt_user).run,
           token: new_jwt
         }.deep_transform_keys { |key| key.to_s.camelize(:lower) },
-          status: :created,
-          except: INTERNAL_ATTRIBUTES,
-          include: %i[assets transactions]
+               status: :created,
+               except: INTERNAL_ATTRIBUTES,
+               include: %i[assets transactions]
       end
 
       def index
@@ -23,13 +23,12 @@ module Api
           accounts: Account.where(user_id: jwt_user.id),
           token: new_jwt
         }.deep_transform_keys { |key| key.to_s.camelize(:lower) },
-          status: :ok,
-          except: INTERNAL_ATTRIBUTES,
-          include: %i[assets transactions]
+               status: :ok,
+               except: INTERNAL_ATTRIBUTES,
+               include: %i[assets transactions]
       end
 
       def update
-        byebug
         @account.update
 
         render json: { token: new_jwt }
@@ -38,7 +37,7 @@ module Api
       def destroy
         @account.destroy
 
-        render json: { token: new_jwt }
+        head :no_content
       end
 
       private
@@ -46,8 +45,6 @@ module Api
       def set_account
         @account ||= Account.find(params[:id])
       end
-
-      def render_account(account, status)end
     end
   end
 end

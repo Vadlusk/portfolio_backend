@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HistoryUpdateChannel < ApplicationCable::Channel
   def subscribed
     # if !params[:accountId] raise...
