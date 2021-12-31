@@ -17,7 +17,8 @@ jobs:
           POSTGRES_USER: rails_github_actions
           POSTGRES_DB: rails_github_actions_test
           POSTGRES_PASSWORD: postgres
-        ports: 5432:5432
+        ports:
+        - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
