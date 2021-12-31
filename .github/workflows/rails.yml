@@ -50,4 +50,7 @@ jobs:
           PGUSER: rails_github_actions
           PGPASSWORD: postgres
           RAILS_ENV: test
+          jwt_string: foo
+          jwt_encryption_algorithm: nones
+          client_id: id
         run: rspec
