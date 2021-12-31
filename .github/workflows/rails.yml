@@ -5,8 +5,6 @@ on:
   pull_request:
     branches: [ main ]
 
-  workflow_dispatch:
-
 jobs:
   verify:
     name: Build
@@ -19,7 +17,7 @@ jobs:
           POSTGRES_USER: rails_github_actions
           POSTGRES_DB: rails_github_actions_test
           POSTGRES_PASSWORD: postgres
-        ports: ["5432:5432"]
+        ports: 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -37,22 +35,19 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6.9
-      - name: Setup test database
+      - name: Setup database
         env:
           RAILS_ENV: test
           PGHOST: localhost
-          POSTGRES_DB: rails_github_actions_test
-          POSTGRES_USER: rails_github_actions
-          POSTGRES_PASSWORD: postgres
+          PGUSER: rails_github_actions
+          PGPASSWORD: postgres
         run: |
           bundle install
-          rake db:create db:migrate
+          rake db:create db:migrate db:test:prepare
       - name: Run tests
         env:
           PGHOST: localhost
-          POSTGRES_DB: rails_github_actions_test
-          POSTGRES_USER: rails_github_actions
-          POSTGRES_PASSWORD: postgres
-          PGPORT: ${{ job.services.postgres.ports[5432] }}
+          PGUSER: rails_github_actions
+          PGPASSWORD: postgres
           RAILS_ENV: test
         run: rspec
