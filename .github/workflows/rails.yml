@@ -51,6 +51,6 @@ jobs:
           PGPASSWORD: postgres
           RAILS_ENV: test
           jwt_string: foo
-          jwt_encryption_algorithm: none
+          jwt_encryption_algorithm: HS256
           client_id: id
         run: rspec
