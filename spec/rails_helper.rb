@@ -11,6 +11,18 @@ require 'coveralls'
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 
 SimpleCov.start 'rails' do
+  if ENV['CI']
+    require 'simplecov-lcov'
+
+    SimpleCov::Formatter::LcovFormatter.config do |c|
+      c.report_with_single_file = true
+      c.single_report_path = 'coverage/lcov.info'
+    end
+
+    formatter SimpleCov::Formatter::LcovFormatter
+  end
+
+  add_filter %w[version.rb initializer.rb]
   add_filter 'app/jobs'
   add_filter 'app/channels'
   add_filter 'app/mailers'

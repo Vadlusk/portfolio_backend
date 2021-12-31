@@ -1,5 +1,6 @@
 # Portfolio backend
-[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio/badge.svg?branch=main)](https://coveralls.io/github/Vadlusk/portfolio?branch=main) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio/maintainability)
+[![Actions Status](https://github.com/Vadlusk/portfolio_backend/workflows/CI/badge.svg)](https://github.com/Vadlusk/portfolio_backend/actions)
+[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio_backend/badge.svg?branch=main)](https://coveralls.io/github/Vadlusk/portfolio_backend?branch=main) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio_backend/maintainability)
 
 A simple Rails api with 3 endpoints (signing up, in, and deleting an account).  
 Written so that only happy path code goes into controllers.
@@ -7,8 +8,8 @@ Written so that only happy path code goes into controllers.
 ## Setup
 
 1. `git clone https://github.com/Vadlusk/portfolio.git <your_desired_project_name>`
-1. [Setup Code Climate](https://codeclimate.com/dashboard)
-1. [Setup Coveralls](https://coveralls.io/) - turn the project on, click on details, copy the `repo_token` and paste into `./.coveralls.yml`.
+1. [Set up Code Climate](https://codeclimate.com/dashboard)
+1. [Set up Coveralls](https://coveralls.io/) - turn the project on, click on details, copy the `repo_token` and paste into `./.coveralls.yml`.
 
 1. `bundle exec rake db:create db:migrate db:test:prepare`
 1. Run tests with `bundle exec rspec`.
