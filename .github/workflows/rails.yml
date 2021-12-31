@@ -36,8 +36,7 @@ jobs:
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6.3
-          bundler-cache: true
+          ruby-version: 2.6.9
       - name: Setup test database
         env:
           RAILS_ENV: test
