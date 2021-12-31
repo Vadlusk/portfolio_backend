@@ -46,6 +46,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
         run: |
           gem install rake
+          gem install concurrent-ruby -v 1.1.9
           rake db:create db:migrate
       - name: Run tests
         env:
