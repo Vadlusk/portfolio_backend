@@ -45,6 +45,7 @@ jobs:
           POSTGRES_USER: rails_github_actions
           POSTGRES_PASSWORD: postgres
         run: |
+          gem install rake
           rake db:create db:migrate
       - name: Run tests
         env:
