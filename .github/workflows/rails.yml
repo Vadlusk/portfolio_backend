@@ -32,15 +32,12 @@ jobs:
         options: --entrypoint redis-server
 
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Set up Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.6.x
-      - name: Install dependenci  es
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
+          ruby-version: 2.6.3
+          bundler-cache: true
       - name: Setup test database
         env:
           RAILS_ENV: test

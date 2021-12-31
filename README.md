@@ -1,5 +1,5 @@
 # Portfolio backend
-[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio/badge.svg?branch=main)](https://coveralls.io/github/Vadlusk/portfolio?branch=main) [![CircleCI](https://circleci.com/gh/Vadlusk/portfolio_backend/tree/main.svg?style=shield&circle-token=cb2d1c12e45e2f09c448e57d164f01230fcd69e1)](https://circleci.com/gh/Vadlusk/portfolio_backend/tree/main) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio/badge.svg?branch=main)](https://coveralls.io/github/Vadlusk/portfolio?branch=main) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio/maintainability)
 
 A simple Rails api with 3 endpoints (signing up, in, and deleting an account).  
 Written so that only happy path code goes into controllers.
