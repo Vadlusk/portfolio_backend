@@ -25,15 +25,17 @@ gem 'redis', '~> 4.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'coveralls', require: false
+  gem 'rubocop', '~> 0.77.0'
+
+end
+
+group :test do
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 0.77.0', require: false
   gem 'shoulda-matchers'
-  gem 'simplecov'
-  gem 'simplecov-lcov', '~> 0.8.0'
+  gem 'simplecov',      require: false
+  gem 'simplecov-lcov', require: false
 end
 
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
