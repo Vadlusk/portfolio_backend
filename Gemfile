@@ -26,10 +26,10 @@ gem 'redis', '~> 4.0'
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'rubocop', '~> 0.77.0'
-
 end
 
 group :test do
+  gem 'coveralls_reborn', '~> 0.18.0', require: false
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'
