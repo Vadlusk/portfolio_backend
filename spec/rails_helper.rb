@@ -6,27 +6,25 @@ require File.expand_path('../config/environment', __dir__)
 require 'rspec/rails'
 require 'spec_helper'
 
-if ENV['COVERAGE'] == 'true'
+if ENV['CI'] == 'true'
   require 'coveralls'
   require 'simplecov'
   require 'simplecov-lcov'
 
-  if ENV['CI'] == 'true'
-    SimpleCov::Formatter::LcovFormatter.config do |config|
-      config.report_with_single_file = true
-      config.lcov_file_name = 'lcov.info'
-    end
-
-    SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
-      SimpleCov::Formatter::LcovFormatter,
-      Coveralls::SimpleCov::Formatter
-    ])
-  else
-    SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
+  SimpleCov::Formatter::LcovFormatter.config do |config|
+    config.report_with_single_file = true
+    config.lcov_file_name = 'lcov.info'
   end
 
-  SimpleCov.start('rails')
+  SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
+    SimpleCov::Formatter::LcovFormatter,
+    Coveralls::SimpleCov::Formatter
+  ])
+else
+  SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 end
+
+SimpleCov.start('rails')
 
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 
