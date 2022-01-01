@@ -84,38 +84,11 @@ class CoinbaseAdapter
       next if data[:type] == 'cardspend' || data[:type] == 'cardbuyback'
 
       if data[:description] == 'Earn Task' || data[:details][:subtitle] == 'From Coinbase Earn'
-        {
-          remote_id: data[:id],
-          entry_type: 'free',
-          details: 'Coinbase earn',
-          currency: data[:amount][:currency],
-          amount: data[:amount][:amount].to_f,
-          price_per_coin: data[:native_amount][:amount].to_f / data[:amount][:amount].to_f,
-          total_price: data[:native_amount][:amount].to_f,
-          occurred_at: data[:created_at]
-        }
+        free_coin_transaction(data, 'Coinbase earn')
       elsif data[:type] == 'staking_reward'
-        {
-          remote_id: data[:id],
-          entry_type: 'free',
-          details: 'staking reward',
-          currency: data[:amount][:currency],
-          amount: data[:amount][:amount].to_f,
-          price_per_coin: data[:native_amount][:amount].to_f / data[:amount][:amount].to_f,
-          total_price: data[:native_amount][:amount].to_f,
-          occurred_at: data[:created_at]
-        }
+        free_coin_transaction(data, 'staking reward')
       elsif data[:type] == 'send' && data[:description] == 'R7 - US Debit Card Rewards (external funded)'
-        {
-          remote_id: data[:id],
-          entry_type: 'free',
-          details: 'debit card reward',
-          currency: data[:amount][:currency],
-          amount: data[:amount][:amount].to_f,
-          price_per_coin: data[:native_amount][:amount].to_f / data[:amount][:amount].to_f,
-          total_price: data[:native_amount][:amount].to_f,
-          occurred_at: data[:created_at]
-        }
+        free_coin_transaction(data, 'debit card reward')
       elsif data[:type] == 'buy'
         {
           remote_id: data[:id],
@@ -123,8 +96,8 @@ class CoinbaseAdapter
           details: nil,
           currency: "#{data[:amount][:currency]}-#{data[:native_amount][:currency]}",
           amount: data[:amount][:amount].to_f.abs,
-          price_per_coin: data[:native_amount][:amount].to_f / data[:amount][:amount].to_f,
-          total_price: data[:native_amount][:amount].to_f,
+          price_per_coin: data[:native_amount][:amount].to_f.abs / data[:amount][:amount].to_f.abs,
+          total_price: data[:native_amount][:amount].to_f.abs,
           occurred_at: data[:created_at]
         }
       elsif data[:type] == 'sell'
@@ -150,38 +123,11 @@ class CoinbaseAdapter
           occurred_at: data[:created_at]
         }
       elsif data[:type] == 'pro_withdrawal'
-        {
-          remote_id: data[:id],
-          entry_type: 'transfer',
-          details: 'from Coinbase Pro to Coinbase',
-          currency: data[:amount][:currency],
-          amount: data[:amount][:amount].to_f,
-          price_per_coin: nil,
-          total_price: nil,
-          occurred_at: data[:created_at]
-        }
+        transfer(data, 'from Coinbase Pro to Coinbase')
       elsif data[:type] == 'pro_deposit' || (data[:type] == 'exchange_deposit' && data[:details][:subtitle] == 'To Coinbase Pro')
-        {
-          remote_id: data[:id],
-          entry_type: 'transfer',
-          details: 'from Coinbase to Coinbase Pro',
-          currency: data[:amount][:currency],
-          amount: data[:amount][:amount].to_f.abs,
-          price_per_coin: nil,
-          total_price: nil,
-          occurred_at: data[:created_at]
-        }
+        transfer(data, 'from Coinbase to Coinbase Pro')
       elsif data[:type] == 'send' && data[:description] != 'R7 - US Debit Card Rewards (external funded)' && data[:description] != 'Earn Task' && data[:details][:subtitle] != 'From Coinbase Earn'
-        {
-          remote_id: data[:id],
-          entry_type: 'transfer',
-          details: "from Coinbase t#{data[:details][:subtitle][1..-1]}",
-          currency: data[:amount][:currency],
-          amount: data[:amount][:amount].to_f.abs,
-          price_per_coin: nil,
-          total_price: nil,
-          occurred_at: data[:created_at]
-        }
+        transfer(data, "from Coinbase t#{data[:details][:subtitle][1..-1]}")
       elsif data[:type] == 'interest'
         {
           remote_id: data[:id],
@@ -199,5 +145,31 @@ class CoinbaseAdapter
         nil
       end
     end.compact
+  end
+
+  def free_coin_transaction(raw_transaction, reason)
+    {
+      remote_id: raw_transaction[:id],
+      entry_type: 'free',
+      details: reason,
+      currency: raw_transaction[:amount][:currency],
+      amount: raw_transaction[:amount][:amount].to_f.abs,
+      price_per_coin: raw_transaction[:native_amount][:amount].to_f.abs / raw_transaction[:amount][:amount].to_f.abs,
+      total_price: raw_transaction[:native_amount][:amount].to_f.abs,
+      occurred_at: raw_transaction[:created_at]
+    }
+  end
+
+  def transfer(raw_transaction, from_to)
+    {
+      remote_id: raw_transaction[:id],
+      entry_type: 'transfer',
+      details: from_to,
+      currency: raw_transaction[:amount][:currency],
+      amount: raw_transaction[:amount][:amount].to_f.abs,
+      price_per_coin: nil,
+      total_price: nil,
+      occurred_at: raw_transaction[:created_at]
+    }
   end
 end
