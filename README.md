@@ -1,6 +1,7 @@
+
 # Crypto Portfolio Tracker (backend)
 [![Actions Status](https://github.com/Vadlusk/portfolio_backend/workflows/CI/badge.svg)](https://github.com/Vadlusk/portfolio_backend/actions)
-[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio_backend/badge.svg?branch=main)](https://coveralls.io/github/Vadlusk/portfolio_backend?branch=main) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio_backend/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio_backend/badge.svg)](https://coveralls.io/github/Vadlusk/portfolio_backend) [![Maintainability](https://api.codeclimate.com/v1/badges/d1b01615db93fc0c5288/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio_backend/maintainability)
 
 Rails app with postgresql db for Crypto Portfolio Tracker
 
