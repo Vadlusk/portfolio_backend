@@ -1,9 +1,8 @@
-# Portfolio backend
+# Crypto Portfolio Tracker (backend)
 [![Actions Status](https://github.com/Vadlusk/portfolio_backend/workflows/CI/badge.svg)](https://github.com/Vadlusk/portfolio_backend/actions)
 [![Coverage Status](https://coveralls.io/repos/github/Vadlusk/portfolio_backend/badge.svg?branch=main)](https://coveralls.io/github/Vadlusk/portfolio_backend?branch=main) [![Maintainability](https://api.codeclimate.com/v1/badges/1f8a15b270dfe3a26b0c/maintainability)](https://codeclimate.com/github/Vadlusk/portfolio_backend/maintainability)
 
-A simple Rails api with 3 endpoints (signing up, in, and deleting an account).  
-Written so that only happy path code goes into controllers.
+Rails app with postgresql db for Crypto Portfolio Tracker
 
 ## Setup
 

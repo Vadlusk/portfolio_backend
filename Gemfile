@@ -25,12 +25,14 @@ gem 'redis', '~> 4.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'coveralls', require: false
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'pry'
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.77.0', require: false
   gem 'shoulda-matchers'
+  gem 'simplecov'
   gem 'simplecov-lcov', '~> 0.8.0'
 end
 
