@@ -20,11 +20,10 @@ if ENV['CI'] == 'true'
     SimpleCov::Formatter::LcovFormatter,
     Coveralls::SimpleCov::Formatter
   ])
-else
-  SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
+
+  SimpleCov.start('rails')
 end
 
-SimpleCov.start('rails')
 
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 
